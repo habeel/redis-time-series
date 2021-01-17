@@ -1,4 +1,3 @@
-import * as Redis from "ioredis";
 import { RedisTimeSeries } from "../redisTimeSeries";
 import { RequestParamsDirector } from "../builder/requestParamsDirector";
 import { RenderFactory } from "./render";
@@ -6,8 +5,8 @@ import { CommandProvider } from "../command/commandProvider";
 import { CommandInvoker } from "../command/commandInvoker";
 import { CommandReceiver } from "../command/commandReceiver";
 import { RequestParamsBuilder } from "../builder/requestParamsBuilder";
-import { ConnectionOptions } from "../index";
-
+import { ConnectionOptions } from "..";
+import { RedisClient } from "redis";
 /**
  * Set redis connection options and return a factory object that create a clients connection
  */
@@ -47,7 +46,7 @@ export class RedisTimeSeriesFactory {
         );
     }
 
-    protected getRedisClient(): Redis.Redis {
-        return new Redis(this.options);
+    protected getRedisClient(): RedisClient {
+        return new RedisClient(this.options);
     }
 }

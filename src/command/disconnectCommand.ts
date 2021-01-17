@@ -1,14 +1,17 @@
-import * as Redis from "ioredis";
+import { RedisClient } from "redis";
 import { CommandInterface } from "./interface/command";
 
 export class DisconnectCommand implements CommandInterface {
-    protected readonly receiver: Redis.Redis;
+    protected readonly receiver: RedisClient;
 
-    constructor(receiver: Redis.Redis) {
+    constructor(receiver: RedisClient) {
         this.receiver = receiver;
     }
 
     public execute(): Promise<string> {
-        return this.receiver.quit();
+        return new Promise<string>((resolve, reject) => {
+            this.receiver.end(true);
+            resolve("OK");
+        });
     }
 }

@@ -1,12 +1,12 @@
 import { CommandInterface } from "./interface/command";
-import * as Redis from "ioredis";
+import { RedisClient } from "redis";
 
 export class ExpireCommand implements CommandInterface {
-    protected readonly receiver: Redis.Redis;
+    protected readonly receiver: RedisClient;
     protected readonly key: string;
     protected readonly seconds: number;
 
-    constructor(receiver: Redis.Redis, key: string, seconds: number) {
+    constructor(receiver: RedisClient, key: string, seconds: number) {
         this.key = key;
         this.seconds = seconds;
         this.receiver = receiver;
@@ -15,7 +15,14 @@ export class ExpireCommand implements CommandInterface {
             throw new Error(`Only integers allowed for 'seconds' parameter. ${seconds} is not an integer.`);
     }
 
-    public execute(): Promise<Redis.BooleanResponse> {
-        return this.receiver.expire(this.key, this.seconds);
+    public execute(): Promise<number> {
+        return new Promise<number>((resolve, reject) => {
+            this.receiver.expire(this.key, this.seconds, (err, reply) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(reply);
+            });
+        });
     }
 }

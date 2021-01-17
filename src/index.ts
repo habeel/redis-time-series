@@ -9,10 +9,10 @@ import { Filter } from "./entity/filter";
 import { List } from "./iterator/list";
 import { AggregationType } from "./enum/aggregationType";
 import { FilterBuilder } from "./builder/filterBuilder";
-import * as Redis from "ioredis";
+import { ClientOpts } from "redis";
 
 type StringNumberArray = (string | number)[];
-type ConnectionOptions = Redis.RedisOptions;
+type ConnectionOptions = ClientOpts;
 
 export {
     RedisTimeSeriesFactory,

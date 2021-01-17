@@ -1,16 +1,23 @@
 import { CommandInterface } from "./interface/command";
-import * as Redis from "ioredis";
+import { RedisClient } from "redis";
 
 export class DeleteCommand implements CommandInterface {
-    protected readonly receiver: Redis.Redis;
+    protected readonly receiver: RedisClient;
     protected readonly keys: string[];
 
-    constructor(receiver: Redis.Redis, keys: string[]) {
+    constructor(receiver: RedisClient, keys: string[]) {
         this.keys = keys;
         this.receiver = receiver;
     }
 
     public execute(): Promise<number> {
-        return this.receiver.del(...this.keys);
+        return new Promise<number>((resolve, reject) => {
+            this.receiver.del(this.keys, (err, reply) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(reply);
+            });
+        })
     }
 }

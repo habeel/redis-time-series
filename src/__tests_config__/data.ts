@@ -1,6 +1,6 @@
 import { ConnectionOptions } from "../index";
 
 export const testOptions: ConnectionOptions = {
-    host: "redislabs-redistimeseries",
-    db: 15
+    host: "127.0.0.1",
+    db: 0
 };

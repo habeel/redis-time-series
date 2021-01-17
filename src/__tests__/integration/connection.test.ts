@@ -3,9 +3,8 @@ import { ConnectionOptions } from "../../index";
 
 test("lazy connection", async () => {
     const redisOptions: ConnectionOptions = {
-        host: "redislabs-redistimeseries",
-        db: 15,
-        lazyConnect: true
+        host: "127.0.0.1",
+        db: 0
     };
     const factory = new RedisTimeSeriesFactory(redisOptions);
     const rtsClient = factory.create();
